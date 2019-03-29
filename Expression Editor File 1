@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <title>Expression Editor</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge"> 
+
+    <link rel="stylesheet" href="D:\bOGnMCzEEeiTdA5yoE99Fg_6da6f2f02cc411e8b484f7e801bd0278_Bootstrap4-starter\Bootstrap4\conFusion\node_modules\bootstrap\dist\css\bootstrap.min.css">
+    <link rel="stylesheet" href="D:\bOGnMCzEEeiTdA5yoE99Fg_6da6f2f02cc411e8b484f7e801bd0278_Bootstrap4-starter\Bootstrap4\conFusion\node_modules\font-awesome\css\font-awesome.min.css">
+    <link rel="stylesheet" href="D:\bOGnMCzEEeiTdA5yoE99Fg_6da6f2f02cc411e8b484f7e801bd0278_Bootstrap4-starter\Bootstrap4\conFusion\node_modules\bootstrap-social\bootstrap-social.css">
+    <style>
+        .inputFormula{
+            background: grey;
+        }
+        
+        .heading{
+            font-size: 0.5cm;
+            margin-left: 5cm;
+        }
+
+        * {
+  box-sizing: border-box;
+}
+
+body {
+  font: 16px Arial; 
+  background: radial-gradient(grey,black);
+  color: whitesmoke; 
+}
+
+button{
+        font-weight:bold;
+}
+.autocomplete {
+  position: relative;
+  display: inline-block;
+} 
+#myInput{
+    margin-top: 1.5cm;
+    width: 15cm;
+}
+input {
+  border: 1px solid transparent;
+  background-color: white;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type=text] {
+  background-color: white;
+  width: 100%;
+}
+
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: rgb(236, 232, 232);
+  cursor: pointer;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid white;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0cm;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: rgb(36, 34, 34); 
+  border-bottom: 1px solid #e2dbdb; 
+
+}
+
+.autocomplete-items div:hover {
+  background-color: rgb(133, 135, 138); 
+}
+
+
+.autocomplete-active {
+  background-color: rgb(133, 135, 138) !important; 
+  color: #ffffff; 
+}
+
+#box {
+  position: relative; 
+  max-width: 800px; 
+  margin: 0 auto; 
+}
+
+#image
+{
+margin-left: 0cm;
+height: 6cm;
+width: 21.1cm;
+}
+
+#item {
+  position: absolute; 
+  bottom: 0; 
+  background: rgb(0, 0, 0); 
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1; 
+  width: 100%; 
+  padding: 20px;
+}
+
+#line{
+    background-color: tomato;
+    width:34cm;
+}
+#outcome{
+    height: 1cm;
+    width: 10cm;
+    background-color: white;
+    color: black;
+}
+    </style>
+    </head>
+    <body>
+        <div id="whole">
+            <div id="box">
+                <img src="C:\Users\Harsh sharma\Pictures\calc.jpg" alt="stock market" id="image">
+                    <div style="font-size:0.8cm">
+                        <p id="item">EXPRESSION EDITOR</p>
+                    </div>
+            </div>
+        <br>
+        <form autocomplete="off" action="/action_page.php">
+            <div class="autocomplete" style="width:300px;">
+              <input id="myInput" type="text" name="input" placeholder="Create you expression">
+            </div>
+        </form><br><br>
+        <button onclick="show()">Validate</button><br><br>
+        <h5 id="outcome"></h5>
+        <hr id="line">
+        <h5 id="print"></h5>
+        <h5 id="print1"></h5>
+        </div>
+        <script>
+             function show(){
+                 console.log("ayush");
+        var i=0;
+       demoString=document.getElementById("myInput").value;
+       var l=demoString.length
+       while(i<l){
+       demoString=demoString.replace('++', '+');
+       demoString = demoString.replace('--', '-');
+
+demoString = demoString.replace('**', '*');
+demoString = demoString.replace('//', '/');
+demoString = demoString.replace('%%', '%');
+ 
+demoString = demoString.replace('+-', '+');
+demoString = demoString.replace('+*', '+');
+demoString = demoString.replace('+/', '+');
+demoString = demoString.replace('+%', '*');
+ 
+demoString = demoString.replace('-+', '-');
+demoString = demoString.replace('-*', '-');
+demoString = demoString.replace('-/', '-');
+demoString = demoString.replace('-%', '-');
+ 
+ demoString = demoString.replace('*-', '*');    
+ demoString = demoString.replace('*+', '*');
+
+ demoString = demoString.replace('*%', '*');
+ 
+ demoString = demoString.replace('/-', '/')
+ demoString = demoString.replace('/*', '/');
+ demoString = demoString.replace('/+', '/');
+ demoString = demoString.replace('/%', '/');
+ 
+  demoString = demoString.replace('%-', '%');
+   demoString = demoString.replace('%*', '%');
+  demoString = demoString.replace('%/', '%');
+   demoString = demoString.replace('%+', '%');
+   i++;
+       }
+       document.getElementById("print").innerHTML="Validated Output : "+demoString;
+       isBalanced();
+    }   
+
+    var tokens = [ ['{','}'] , ['[',']'] , ['(',')'] ];
+
+function isOpenParenthesis(parenthesisChar) {
+  for (var j = 0; j < tokens.length; j++) {
+    if (tokens[j][0] === parenthesisChar) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+function matches(topOfStack, closedParenthesis) {
+  for (var k = 0; k < tokens.length; k++) {
+    if (tokens[k][0] === topOfStack && tokens[k][1] === closedParenthesis) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+function isParanthesis(char) {
+  var str = '{}[]()';
+  if (str.indexOf(char) > -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+function printToScreen(bool) {
+  var parensStr = document.getElementById('myInput');
+  var inputStr = parensStr.value
+  var answer = document.getElementById('print1');
+  if (bool) {
+    answer.innerHTML ="No Error";
+    fun(demoString);
+  } else {
+    answer.innerHTML ="! Error Detected : Parenthesis Not Matched!";
+  }
+}
+
+
+function isBalanced() {
+  var parensStr = document.getElementById('myInput');
+  var inputStr = parensStr.value
+  if (inputStr === null) { printToScreen(true); }
+
+  var expression = inputStr.split('');
+  var stack = [];
+
+  for (var i = 0; i < expression.length; i++) {
+    if (isParanthesis(expression[i])) {
+      if (isOpenParenthesis(expression[i])) {
+        stack.push(expression[i]);
+      } else {
+        if (stack.length === 0) {
+          return printToScreen(false);
+        }
+        var top = stack.pop(); 
+        if (!matches(top, expression[i])) {
+          return printToScreen(false);
+        }
+      }
+    }
+  }
+
+  var returnValue = stack.length === 0 ? true : false;
+  printToScreen(returnValue)
+}
+// FOR AUTOCOMPLETE
+var temp=0;
+		var array=[0];
+		var lastlength=0
+		var enter=false;
+                function autocomplete(inp, arr,arr1) {
+                  
+		  var currentFocus;
+                  inp.addEventListener("input", function(e) {
+                   
+		  //    console.log(inp);    
+		      enter=false;
+		      var a, b, i, val = this.value;
+                      closeAllLists();
+			               
+		   if (!val) { return false;}
+                      currentFocus = -1;
+                      if(val.substr(-1)=='+'||val.substr(-1)=='-'||val.substr(-1)=='*'||val.substr(-1)=='/'||val.substr(-1)=='('||val.substr(-1)==')'||val.substr(-1)=='  ')
+                      {
+		     //document.getElementById("autocomplete-items").style.marginLeft=(val.length*2)+"cm";
+                 //   console.log(temp);                     
+		    temp=temp+1;
+		   array[temp]=val.length;
+		     return false;
+                      }
+		      
+                      a = document.createElement("DIV");
+                      a.setAttribute("id", this.id + "autocomplete-list");
+                      a.setAttribute("class", "autocomplete-items");
+                      this.parentNode.appendChild(a);
+                      for (i = 0; i < arr.length; i++) {
+                        console.log(array[temp]);
+			var t=0;		    
+		    var res = arr[i].split(".");
+		     
+		     if(res.length>1){
+		    t=instrument.length+1;
+		     }
+		     console.log(arr[i].substr(t, val.length-array[temp]));  
+		     if (arr[i].substr(t, val.length-array[temp]).toUpperCase() == val.substr(array[temp],val.length).toUpperCase()) {
+                         b = document.createElement("DIV");
+                         b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                          b.innerHTML += arr[i].substr(val.length);
+                          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                          b.addEventListener("click", function(e) {
+                              inp.value = val.substr(0,array[temp])+this.getElementsByTagName("input")[0].value;
+                              enter=true;
+			      closeAllLists();
+                          });
+                          a.appendChild(b);
+                        }
+			
+                      }
+		        for (i = 0; i < arr1.length; i++) {
+                        console.log(array[temp]);
+			var t=0;		    
+		    var res = arr1[i].split(".");
+		        
+			 
+		     if(res.length>1){
+		    t=position.length+1;
+		     }
+		   if (arr1[i].substr(t, val.length-array[temp]).toUpperCase() == val.substr(array[temp],val.length).toUpperCase()) {
+                          b = document.createElement("DIV");
+                         b.innerHTML = "<strong>" + arr1[i].substr(0, val.length) + "</strong>";
+                          b.innerHTML += arr1[i].substr(val.length);
+                          b.innerHTML += "<input type='hidden' value='" + arr1[i]	 + "'>";
+                          b.addEventListener("click", function(e) {
+                              inp.value = val.substr(0,array[temp])+this.getElementsByTagName("input")[0].value;
+                              enter=true;
+			      closeAllLists();
+                          });
+                          a.appendChild(b);
+                        }
+			
+                      }
+		      
+                  });
+                  inp.addEventListener("keydown", function(e) {
+		  var val = this.value;
+                      var x = document.getElementById(this.id + "autocomplete-list");
+                      if (x) x = x.getElementsByTagName("div");
+                      if (e.keyCode == 40) {
+                        currentFocus++;
+                        addActive(x);
+                      } else if (e.keyCode == 38) { 
+                        currentFocus--;
+                        addActive(x);
+                      } else if (e.keyCode == 13) {
+                       e.preventDefault();
+                        if (currentFocus > -1) {
+                          if (x) x[currentFocus].click();
+                        }
+                      }else if (e.keyCode == 8){
+		      if(val.substr(-1)=='+'||val.substr(-1)=='-'||val.substr(-1)=='*'||val.substr(-1)=='/'||val.substr(-1)=='('||val.substr(-1)==')')
+                      { 
+					    
+                    if(temp==1){		
+					      		      
+		      temp=temp-1;
+		      }
+		    if(temp>1){		
+					      		      
+		      temp=temp-2;
+		      }
+		      
+		      console.log(temp);
+		       }
+		      if(enter)
+		      {
+		          inp.value = val.substr(0,array[temp]+1);
+	if(temp!=0){		
+			temp--;
+		      }}
+		      
+		      
+		    }  
+                  });
+                  function addActive(x) {
+                    if (!x) return false;
+                    removeActive(x);
+                    if (currentFocus >= x.length) currentFocus = 0;
+                    if (currentFocus < 0) currentFocus = (x.length - 1);
+                    x[currentFocus].classList.add("autocomplete-active");
+                  }
+                  function removeActive(x) {
+                    for (var i = 0; i < x.length; i++) {
+                      x[i].classList.remove("autocomplete-active");
+                    }
+                  }
+                  function closeAllLists(elmnt) {
+                    var x = document.getElementsByClassName("autocomplete-items");
+                    for (var i = 0; i < x.length; i++) {
+                      if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                      }
+                    }
+                  }
+                  document.addEventListener("click", function (e) {
+                      closeAllLists(e.target);
+                  });
+                }
+                
+function fun(demo){
+                var foo={'LTP':['Last','Last TradedPrice'],'Volume':['Vol'],'Yr_Hight':['Year_High','52wk_high'],'Yr Low':['Year_Low','52wk_low'],'PNL':['P&L','Proft_Loss'],'Day_PNL':['MtoM','Day_Gain'],'Realised_PNL':['Booked_Profit','Booked_PNL'],'BEP':['Break_Even_Price']};
+  // 100, 200, 300
+                    
+
+var last=0;  
+var out="";
+demo=demo+")";
+ for(i=1;i<demo.length;i++)
+{	
+if(demo[i]=='+'||demo[i]=='-'||demo[i]=='*'||demo[i]=='/'||demo[i]=='['||demo[i]==']'||demo[i]=='('||demo[i]==')'||demo[i]=='{'||demo[i]=='}'){
+if(demo[i-1]!='+'&&demo[i-1]!='-'&&demo[i-1]!='*'&&demo[i-1]!='/'&&demo[i-1]!='['&&demo[i-1]!=']'&&demo[i-1]!='('&&demo[i-1]!=')'&&demo[i-1]!='}'&&demoString[i-1]!='{')
+{
+
+
+
+for(var k in foo){
+  var key=k;  // alerts key
+for(j=0;j<foo[k].length;j++) 
+{
+var aa=false;
+
+if(String(foo[k][j]).toUpperCase()==demo.substr(last,i-last).toUpperCase())
+{
+out=out.concat(key);
+aa=true;
+break
+}
+}
+if(aa==true)
+break;
+}
+if(!aa)
+{
+out=out.concat(demo.substr(last,i-last));
+
+}
+last=i+1;	
+}else
+{
+last=i+1;
+} 
+
+out=out.concat(demo[i]);
+
+}}
+console.log(out.substr(0,out.length-1))
+document.getElementById("outcome").innerHTML=out.substr(0,out.length-1);
+               }                    
+		
+	
+		
+               var count= ["LTP","Last","Last_traded_price","Volume"," Vol","Yr_Hight","PNL","Year_High","52wk_high","Yr_Low","Year_Low","52wk_Low","backbenchers"];       
+                var count1 = ["PNL","Day_PNL","Realised_PNL","BEP","By_price","Quantity","Commission","Break_Even_Price","Day_gain","MtoM","Booked_Profit","Booked PNL","backbenchers"];
+				
+                var instrument="instrument";
+
+                    var position="position";
+			for(i=0;i<count.length;i++){
+			for(j=0;j<count1.length;j++)
+
+			if(count[i]==count1[j])
+			{console.log("a11");  
+			count[i]=instrument+"."+count[i];
+			count1[j]=position+"."+count1[j];
+			break;
+			}
+			}
+				      
+   console.log(count[1]);  
+
+for(i=0;i<count.length;i++){
+ console.log(count[i]);  
+}
+                 autocomplete(document.getElementById("myInput"), count,count1);
+               
+            </script>
+    </body>
+</html>
